@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Miguel Castillo.
+ * Copyright (c) 2014 Miguel Castillo.
  * Licensed under MIT
  */
 
@@ -7,18 +7,18 @@
 (function(factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(["jquery"], factory);
+    define([], factory);
   } else {
     // Browser globals
-    factory(this.$);
+    this.mortar.resource = factory();
   }
 })
-(function( $ ) {
+(function( ) {
   "use strict";
 
   var cache = {};
 
-  function resource( settings ) {
+  function fetch( settings ) {
     var deferred;
 
     if ( !settings ) {
@@ -33,7 +33,7 @@
 
     // If the item is cached, we will just return that.
     if ( settings.url in cache === false || settings.refresh === true ) {
-      var $ajax = $.extend({
+      var $ajax = _.extend({
         url: settings.url,
         cache: false
       }, settings.ajax);
@@ -57,25 +57,25 @@
   }
 
 
-  resource.get = function( url ) {
+  fetch.get = function( url ) {
     return cache[url];
   }
 
 
-  resource.remove = function( url ) {
+  fetch.remove = function( url ) {
     if ( url in cache ) {
       delete cache[url];
     }
   }
 
 
-  resource.clear = function() {
+  fetch.clear = function() {
     for ( var i in cache ) {
       delete cache[i];
     }
   }
 
 
-  return resource;
+  return fetch;
 });
 
